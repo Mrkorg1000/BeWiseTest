@@ -13,49 +13,34 @@ async def get_question(db: AsyncSession) -> DBQuestion:
         .order_by(DBQuestion.created_at.desc())
     )
     result = await db.execute(query)
-    
     return result.scalars().first() if result else None 
 
 
 async def add_question(db: AsyncSession, number: int):
-
     url = f'https://jservice.io/api/random?count={number}'
     print(url)
     response = requests.get(url)
     list_of_questions = json.loads(response.content)
-
     #ids = await get_ids(db)
-    
-
-    for q in list_of_questions:
-            
+    for q in list_of_questions:    
         ids = await get_ids(db)
         id = q['id']
         while id in ids:
             await get_one_question()
         else:
-      
             db_question = DBQuestion(
                 id = q['id'],
                 question_text = q['question'],
                 answer_text = q['answer']
             )
-
             db.add(db_question)
             await db.commit()
             await db.refresh(db_question)
             
-            # with db.begin():
-            #     db.add(db_question)
-            # await db.refresh(db_question)
-            # return db_question #!!!!!!!!!!!!!!!!!
 
-
-# ids
 async def get_ids(db: AsyncSession) -> List[int]:
     result = await db.execute(select(DBQuestion.id))
     return result.scalars().all()
-
 
 
 async def get_one_question():
@@ -64,13 +49,5 @@ async def get_one_question():
     return question
 
 
-    # db_question = DBQuestion(
-    #         id = question['id'],
-    #         question_text = question['question'],
-    #         answer_text = question['answer']
-    #     )
-    # async with db.begin():
-    #     db.add(db_question)
-    # await db.refresh(db_question)
-    # return db_question
+    
 
