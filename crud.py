@@ -24,7 +24,7 @@ async def add_question(db: AsyncSession, number: int):
     response = requests.get(url)
     list_of_questions = json.loads(response.content)
 
-    ids = await get_ids(db)
+    #ids = await get_ids(db)
     
 
     for q in list_of_questions:
