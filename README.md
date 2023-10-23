@@ -24,5 +24,7 @@
 Установка этих средств выходит за пределы этой инструкции.
 
 Установка зависимостей -- `pip install -r requirements.txt`
+
 Поднимаем Базу данных и Adminer -- `docker-compose up -d`
+
 запуск АПИ в режиме разработчика -- `uvicorn main:app --reload`
